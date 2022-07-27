@@ -1,15 +1,18 @@
 # Build
 **/target
 **/Cargo.lock
+**/bin
 
 # OS General
 Thumbs.db
 .DS_Store
 
 # Develop tools
-.vscode/
 .idea/
 *.swp
 
 # Local History
 .history/
+
+# Log
+*.log

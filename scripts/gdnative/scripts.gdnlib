@@ -10,7 +10,7 @@ reloadable=true
 Android.arm64-v8a="res://scripts/gdnative/bin/android/aarch64-linux-android/libscripts.so"
 Android.x86_64="res://scripts/gdnative/bin/android/x86_64-linux-android/libscripts.so"
 OSX.64="res://scripts/gdnative/bin/macos/libscripts.dylib"
-Windows.64="res://scripts/target/x86_64-pc-windows-gnu/debug/scripts.dll"
+Windows.64="res://scripts/gdnative/bin/windows/scripts.dll"
 X11.64="res://scripts/gdnative/bin/linux/libscripts.so"
 
 [dependencies]
