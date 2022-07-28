@@ -1,18 +1,15 @@
 use gdnative::api::Node2D;
 use gdnative::prelude::*;
 
-pub mod world;
-
 #[inherit(Node2D)]
 #[derive(NativeClass)]
-pub struct Game {}
+pub struct Init {}
 
 #[methods]
-impl Game {
+impl Init {
     fn new(_owner: &Node2D) -> Self {
-        Game {}
+        Init {}
     }
-
     #[export]
     fn _ready(&mut self, _owner: &Node2D) {
         godot_print!("Hello world!");

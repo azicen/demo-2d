@@ -1,0 +1,18 @@
+[gd_resource type="NativeScript" load_steps=2 format=2]
+
+[sub_resource type="GDNativeLibrary" id=1]
+entry/Android.arm64-v8a = "res://bin/android/aarch64-linux-android/libscripts.so"
+entry/Android.x86_64 = "res://bin/android/x86_64-linux-android/libscripts.so"
+entry/OSX.64 = "res://bin/macos/libscripts.dylib"
+entry/Windows.64 = "res://bin/windows/scripts.dll"
+entry/X11.64 = "res://bin/linux/libscripts.so"
+dependency/Android.arm64-v8a = [  ]
+dependency/Android.x86_64 = [  ]
+dependency/OSX.64 = [  ]
+dependency/Windows.64 = [  ]
+dependency/X11.64 = [  ]
+
+[resource]
+resource_name = "Init"
+class_name = "Init"
+library = SubResource( 1 )
