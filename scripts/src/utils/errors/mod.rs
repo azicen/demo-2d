@@ -1,5 +1,5 @@
 pub use crate::err;
 
-pub use self::error::Error;
+pub use self::error::*;
 
-pub mod error;
+mod error;

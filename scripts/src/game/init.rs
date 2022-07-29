@@ -1,18 +1,33 @@
 use gdnative::api::Node2D;
 use gdnative::prelude::*;
 
-#[inherit(Node2D)]
+use crate::core::world::World;
+
 #[derive(NativeClass)]
-pub struct Init {}
+#[inherit(Node2D)]
+pub struct Init {
+    world: Option<World>,
+}
 
 #[methods]
 impl Init {
     fn new(_owner: &Node2D) -> Self {
-        Init {}
+        Init { world: None }
     }
+
     #[export]
     fn _ready(&mut self, _owner: &Node2D) {
         godot_print!("Hello world!");
+
+        let _world = World::new(_owner);
+        match _world {
+            Ok(v) => {
+                self.world = Some(v);
+            }
+            Err(e) => {
+                godot_dbg!(e);
+            }
+        }
     }
 
     #[export]
