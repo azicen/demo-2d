@@ -2,6 +2,7 @@ use gdnative::prelude::*;
 
 use game::*;
 
+pub mod utils;
 mod game;
 
 #[macro_use]
