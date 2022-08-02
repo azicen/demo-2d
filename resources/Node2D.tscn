@@ -1,7 +1,12 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://scripts/src/game/init.gdns" type="Script" id=1]
+[ext_resource path="res://elaiki_core/src/game/init.gdns" type="Script" id=1]
 [ext_resource path="res://resources/image/tile/tileset.tres" type="TileSet" id=2]
+[ext_resource path="res://resources/image/icon.png" type="Texture" id=3]
+[ext_resource path="res://elaiki_core/src/game/controller/keyboard_controller.gdns" type="Script" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 30.0
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
@@ -15,4 +20,12 @@ cell_size = Vector2( 32, 32 )
 format = 1
 tile_data = PoolIntArray( 131079, 0, 0, 131081, 0, 0, 131083, 0, 0, 131085, 0, 0, 131087, 0, 0, 196616, 0, 0, 196618, 0, 0, 196620, 0, 0, 196622, 0, 0, 262151, 0, 0, 262153, 0, 0, 262155, 0, 0, 262157, 0, 0, 262159, 0, 0, 1507579, 0, 0 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+position = Vector2( 100, 100 )
+script = ExtResource( 4 )
+
+[node name="Sprite" type="Sprite" parent="KinematicBody2D"]
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
+shape = SubResource( 1 )

@@ -2,8 +2,10 @@
 # @Date: 2022-07-28 01:07:14
 # @Last Modified time: 2022-07-28 01:09:00
 
+PROJECT_NAME = elaiki_core
+
 BIN_DIR = ./bin
-TARGET_DIR = ./scripts/target
+TARGET_DIR = ./elaiki_core/target
 
 
 
@@ -17,9 +19,9 @@ run:
 # 构建
 build:
 	@echo start build...
-	@cd scripts && cargo build
+	@cd $(PROJECT_NAME) && cargo build
 	@make init-python-cp
-	@python $(TARGET_DIR)/cp.py $(TARGET_DIR)/debug/scripts.dll $(BIN_DIR)/windows/scripts.dll
+	@python $(TARGET_DIR)/cp.py $(TARGET_DIR)/debug/$(PROJECT_NAME).dll $(BIN_DIR)/windows/scripts.dll
 	@echo finish build ...
 
 
@@ -34,9 +36,9 @@ TARGET = "x86_64-pc-windows-gnu"
 # 构建 x86_64-pc-windows-gnu
 build-x86_64-pc-windows-gnu-debug:
 	@echo start build $(TARGET)...
-	@cd scripts && cargo build --target $(TARGET)
+	@cd $(PROJECT_NAME) && cargo build --target $(TARGET)
 	@make init-python-cp
-	@python $(TARGET_DIR)/cp.py $(TARGET_DIR)/$(TARGET)/debug/scripts.dll $(BIN_DIR)/windows/scripts.dll
+	@python $(TARGET_DIR)/cp.py $(TARGET_DIR)/$(TARGET)/debug/$(PROJECT_NAME).dll $(BIN_DIR)/windows/scripts.dll
 	@echo finish build $(TARGET)...
 
 
