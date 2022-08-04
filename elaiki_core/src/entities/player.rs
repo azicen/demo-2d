@@ -1,16 +1,22 @@
-use elaiki_api::{entities::EntityMovable, utils::errors::*};
-use elaiki_derive::{entity_attribute_macro, Entity};
-use gdnative::prelude::{KinematicBody2D, Node2D, Ref, Vector2};
+use std::rc::Rc;
+
+use gdnative::prelude::Vector2;
+
+use elaiki_api::entities::EntityMovable;
+use elaiki_derive::{Entity, entity_attribute_macro};
+
+use crate::resource_manager::PlayerResource;
 
 #[derive(Entity)]
 #[entity_attribute_macro]
 pub struct Player {
-    pub game_obj: Ref<KinematicBody2D>,
+    resource: Rc<PlayerResource>,
+    // pub game_obj: Ref<KinematicBody2D>,
 }
 
 impl EntityMovable for Player {
-    fn move_entity(&mut self, x: f32, y: f32) {
-        unsafe { self.game_obj.assume_safe() }.move_and_collide(
+    fn movement(&mut self, x: f32, y: f32) {
+        unsafe { self.resource.kinematic_body() }.move_and_collide(
             Vector2::new(x, y),
             true,
             true,
@@ -20,19 +26,10 @@ impl EntityMovable for Player {
 }
 
 impl Player {
-    pub fn new(root_node: &Node2D) -> Result<Player, Error> {
-        let _game_obj = root_node.get_node("KinematicBody2D");
-
-        let game_obj = unsafe { _game_obj.unwrap().assume_safe() }
-            .cast::<KinematicBody2D>()
-            .unwrap()
-            .claim();
-
-        let _new = Player {
-            game_obj: game_obj,
+    pub fn new(player_resource: Rc<PlayerResource>) -> Player {
+        Player {
+            resource: player_resource,
             id: 0,
-        };
-
-        Ok(_new)
+        }
     }
 }

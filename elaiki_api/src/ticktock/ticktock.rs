@@ -1,16 +1,6 @@
-use crate::utils::errors::*;
+use crate::utils::errors::Error;
 
-pub enum Ticktock {
-    // 帧命令，每次更新帧时被执行
-    // 由 gdnative::prelude::NativeClass::_process 触发
-    Frame(Box<dyn TicktockBase>),
-
-    // 时钟命令，固定时间被执行
-    // 由 gdnative::prelude::NativeClass::_physics_process 触发
-    Fixed(Box<dyn TicktockBase>),
-}
-
-pub trait TicktockBase {
+pub trait Ticktock {
     // 执行
     fn exec(&self) -> Result<(), Error>;
 
@@ -22,12 +12,4 @@ pub trait TicktockBase {
 
     // 是否执行成功
     fn is_successful(&self) -> bool;
-}
-
-pub trait FrameTicktock {
-    type TicktockBase;
-}
-
-pub trait FixedTicktock {
-    type TicktockBase;
 }

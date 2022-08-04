@@ -13,6 +13,6 @@ dependency/Windows.64 = [  ]
 dependency/X11.64 = [  ]
 
 [resource]
-resource_name = "Init"
-class_name = "Init"
+resource_name = "Game"
+class_name = "Game"
 library = SubResource( 1 )

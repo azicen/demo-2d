@@ -1,7 +1,10 @@
 use std::{cell::RefCell, rc::Rc};
 
-use elaiki_api::{ticktock::TicktockBase, utils::errors::Error};
 use gdnative::prelude::Vector2;
+
+use elaiki_api::entities::EntityMovable;
+use elaiki_api::ticktock::Ticktock;
+use elaiki_api::utils::errors::Error;
 
 use crate::entities::Player;
 
@@ -17,14 +20,13 @@ impl TicktockMovable {
     }
 }
 
-impl TicktockBase for TicktockMovable {
+impl Ticktock for TicktockMovable {
     // 执行
     fn exec(&self) -> Result<(), Error> {
-        let player = self.player.try_borrow_mut().unwrap();
-        let game_obj = unsafe { player.game_obj.assume_safe() };
+        let mut player = self.player.try_borrow_mut().unwrap(); // TODO 不安全的代码
 
         let v2 = Vector2::new(self.x, self.y);
-        game_obj.move_and_collide(v2, true, true, false);
+        player.movement(v2.x, v2.y);
         Ok(())
     }
 
