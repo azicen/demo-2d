@@ -1,7 +1,8 @@
 #[macro_export]
 macro_rules! err {
-    ($($args:tt)*) => ({
+    ($($args:tt)*) => {{
         let description = format!($($args)*);
-        elaiki_api::utils::errors::Error::new(description);
-    })
+        let res = $crate::utils::errors::Error::new(description);
+        res
+    }}
 }
