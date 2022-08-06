@@ -1,43 +1,45 @@
 use proc_macro::TokenStream;
+use proc_macro2::TokenStream as TokenStream2;
 
 use quote::quote;
 use syn::{DeriveInput, ItemStruct, parse::{self, Parser}, parse_macro_input};
 
-#[proc_macro_derive(Entity)]
-pub fn entity_macro_derive(input: TokenStream) -> TokenStream {
-    // 将proc_macro::TokenStream转换为非proc_macro类型，以便于测试
-    let derive_input = parse_macro_input!(input as DeriveInput);
+#[proc_macro_attribute]
+pub fn entity_base(args: TokenStream, input: TokenStream) -> TokenStream {
+    let _ = parse_macro_input!(args as parse::Nothing);
 
-    // 建立特征的实现
-    // entity_attribute_macro(&mut derive_input);
-    entity_impl_macro(&derive_input)
+    let mut item_struct = parse_macro_input!(input as ItemStruct);
+    let struct_gen = entity_attribute_macro(&mut item_struct);
+
+    let derive_input = DeriveInput::from(item_struct);
+    let impl_gen = entity_impl_macro(&derive_input);
+
+    return quote! {
+        #struct_gen
+        #impl_gen
+    }.into()
 }
 
 // 生成结构体属性
-#[proc_macro_attribute]
-pub fn entity_attribute_macro(args: TokenStream, input: TokenStream) -> TokenStream {
-    let mut item_struct = parse_macro_input!(input as ItemStruct);
-    let _ = parse_macro_input!(args as parse::Nothing);
-
+fn entity_attribute_macro(input: &mut ItemStruct) -> TokenStream2 {
     let field_list = quote! {
         id: u32
     };
 
-    if let syn::Fields::Named(ref mut fields) = item_struct.fields {
+    if let syn::Fields::Named(ref mut fields) = input.fields {
         match syn::Field::parse_named.parse2(field_list) {
             Ok(field) => fields.named.push(field),
             Err(e) => panic!("{}", e),
         };
     }
 
-    return quote! {
-        #item_struct
+    quote! {
+        #input
     }
-        .into();
 }
 
 // 生成结构体方法
-fn entity_impl_macro(ast: &DeriveInput) -> TokenStream {
+fn entity_impl_macro(ast: &DeriveInput) -> TokenStream2 {
     let name = &ast.ident;
     let gen = quote! {
         impl ::elaiki_api::entities::Entity for #name {
@@ -50,5 +52,5 @@ fn entity_impl_macro(ast: &DeriveInput) -> TokenStream {
             }
         }
     };
-    gen.into()
+    gen
 }

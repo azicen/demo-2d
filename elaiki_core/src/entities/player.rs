@@ -3,15 +3,13 @@ use std::rc::Rc;
 use gdnative::prelude::Vector2;
 
 use elaiki_api::entities::EntityMovable;
-use elaiki_derive::{Entity, entity_attribute_macro};
+use elaiki_derive::{/* Entity,  */entity_base};
 
 use crate::resource_manager::PlayerResource;
 
-#[derive(Entity)]
-#[entity_attribute_macro]
+#[entity_base]
 pub struct Player {
     resource: Rc<PlayerResource>,
-    // pub game_obj: Ref<KinematicBody2D>,
 }
 
 impl EntityMovable for Player {
