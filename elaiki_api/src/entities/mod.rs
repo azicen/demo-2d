@@ -1,6 +1,8 @@
+pub use elaiki_derive::{entity_base, event_revocable_base};
+
 pub use self::{
-    entity::Entity, entity_damageable::EntityDamageable,
-    entity_live::EntityLiving, entity_movable::EntityMovable,
+    entity::Entity, entity_damageable::EntityDamageable, entity_live::EntityLiving,
+    entity_movable::EntityMovable,
 };
 
 mod entity;

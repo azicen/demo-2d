@@ -2,8 +2,7 @@ use std::rc::Rc;
 
 use gdnative::prelude::Vector2;
 
-use elaiki_api::entities::EntityMovable;
-use elaiki_derive::{/* Entity,  */entity_base};
+use elaiki_api::entities::*;
 
 use crate::resource_manager::PlayerResource;
 
@@ -27,7 +26,7 @@ impl Player {
     pub fn new(player_resource: Rc<PlayerResource>) -> Player {
         Player {
             resource: player_resource,
-            id: 0,
+            __id: 0,
         }
     }
 }

@@ -9,4 +9,3 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 gdnative = "0.10.0"
 elaiki_api = { path = "../elaiki_api" }
-elaiki_derive = { path = "../elaiki_derive" }
