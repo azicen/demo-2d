@@ -24,7 +24,7 @@ impl ResourceManager {
         // 获取节点
         let node = root_node.get_node(node_path);
         // 节点是否存在
-        let r = match node {
+        let result = match node {
             // 节点类型是否正确
             Some(n) => match unsafe { n.assume_safe() }.cast::<U>() {
                 Some(n2d) => Ok(n2d.claim()),
@@ -32,7 +32,7 @@ impl ResourceManager {
             },
             None => Err(err!("node path:{} do not exist.", node_path)),
         };
-        r
+        result
     }
 }
 
@@ -86,3 +86,5 @@ impl PlayerResource {
         self.kinematic_body.assume_safe()
     }
 }
+
+struct MapResource {}

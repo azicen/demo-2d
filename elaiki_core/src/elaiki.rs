@@ -5,8 +5,6 @@ use std::sync::{Mutex, Once};
 
 use gdnative::prelude::Node2D;
 
-use elaiki_api::log::Logger;
-
 use crate::entities::Player;
 use crate::log::Log;
 use crate::resource_manager::ResourceManager;
@@ -15,17 +13,20 @@ pub struct Elaiki {
     ticktock_hub: Rc<crate::ticktock::Hub>,
     player: Option<Rc<RefCell<Player>>>,
 
-    log: Rc<dyn Logger>,
+    log: Rc<dyn elaiki_api::log::Logger>,
+    logger: elaiki_api::log::Helper,
 }
 
 impl Elaiki {
     pub fn new() -> Self {
         let log = Rc::new(Log::new());
+        let logger = elaiki_api::log::Helper::new(log.clone());
         Elaiki {
             ticktock_hub: Rc::new(crate::ticktock::Hub::new(log.clone())),
             player: None,
 
             log,
+            logger,
         }
     }
 
@@ -47,6 +48,7 @@ impl Elaiki {
         self.player = Some(Rc::new(RefCell::new(Player::new(
             resource_manager.player_resource(),
         ))));
+        self.logger.debug("Ok... elaiki init");
     }
 
     pub fn ticktock_hub(&self) -> Rc<crate::ticktock::Hub> {
@@ -57,7 +59,7 @@ impl Elaiki {
         Rc::clone(&self.player.as_ref().unwrap()) // TODO 为完成的不安全代码
     }
 
-    pub fn log(&self) -> Rc<dyn Logger> {
+    pub fn log(&self) -> Rc<dyn elaiki_api::log::Logger> {
         self.log.clone()
     }
 }
