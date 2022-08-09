@@ -2,11 +2,23 @@
 # @Date: 2022-07-28 01:07:14
 # @Last Modified time: 2022-07-28 01:09:00
 
+ifeq ($(OS), Windows_NT)
+	CP = powershell cp
+else
+	CP = bash cp
+endif
+
 PROJECT_NAME = elaiki_core
 
 BIN_DIR = ./bin
 TARGET_DIR = ./elaiki_core/target
 
+
+.PHONY: init
+# 初始化环境
+init:
+	@rustup toolchain install stable-x86_64-pc-windows-gnu
+	@rustup target add x86_64-pc-windows-gnu
 
 
 .PHONY: run
@@ -20,8 +32,7 @@ run:
 build:
 	@echo start build...
 	@cd $(PROJECT_NAME) && cargo build
-	@make init-python-cp
-	@python $(TARGET_DIR)/cp.py $(TARGET_DIR)/debug/$(PROJECT_NAME).dll $(BIN_DIR)/windows/scripts.dll
+	@$(CP) $(TARGET_DIR)/debug/$(PROJECT_NAME).dll $(BIN_DIR)/windows/scripts.dll
 	@echo finish build ...
 
 
@@ -32,23 +43,28 @@ run-x86_64-pc-windows-gnu-debug:
 	@godot -d
 
 .PHONY: build-x86_64-pc-windows-gnu-debug
-TARGET = "x86_64-pc-windows-gnu"
+TARGET = x86_64-pc-windows-gnu
 # 构建 x86_64-pc-windows-gnu
 build-x86_64-pc-windows-gnu-debug:
+	echo $(SHELL)
 	@echo start build $(TARGET)...
 	@cd $(PROJECT_NAME) && cargo build --target $(TARGET)
-	@make init-python-cp
-	@python $(TARGET_DIR)/cp.py $(TARGET_DIR)/$(TARGET)/debug/$(PROJECT_NAME).dll $(BIN_DIR)/windows/scripts.dll
+	@$(CP) $(TARGET_DIR)/$(TARGET)/debug/$(PROJECT_NAME).dll $(BIN_DIR)/windows/scripts.dll
 	@echo finish build $(TARGET)...
 
 
+.PHONY: run-x86_64-pc-windows-msvc-debug
+# 构建并运行 x86_64-pc-windows-msvc
+run-x86_64-pc-windows-msvc-debug:
+	@make build-x86_64-pc-windows-msvc-debug
+	@godot -d
 
-########## .py ##########
-
-.PHONY: init-python-cp
-# 生成拷贝文件的python脚本, 用于兼容全平台
-init-python-cp:
-	@echo import sys> $(TARGET_DIR)/cp.py
-	@echo import shutil>> $(TARGET_DIR)/cp.py
-	@echo source, target = sys.argv[1], sys.argv[2]>> $(TARGET_DIR)/cp.py
-	@echo shutil.copy(source, target)>> $(TARGET_DIR)/cp.py
+.PHONY: build-x86_64-pc-windows-msvc-debug
+TARGET = x86_64-pc-windows-msvc
+# 构建 x86_64-pc-windows-msvc
+build-x86_64-pc-windows-msvc-debug:
+	echo $(SHELL)
+	@echo start build $(TARGET)...
+	@cd $(PROJECT_NAME) && cargo build --target $(TARGET)
+	@$(CP) $(TARGET_DIR)/$(TARGET)/debug/$(PROJECT_NAME).dll $(BIN_DIR)/windows/scripts.dll
+	@echo finish build $(TARGET)...
