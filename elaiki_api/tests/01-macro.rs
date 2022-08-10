@@ -14,6 +14,8 @@ mod test_entity_attribute_macro {
 }
 
 mod test_event_attribute_macro {
+    use std::any::Any;
+
     use elaiki_api::events::{Event, event_base};
 
     #[event_base(name = "test_event_attribute_macro")]
@@ -31,6 +33,8 @@ mod test_event_attribute_macro {
 }
 
 mod test_event_revocable_attribute_macro {
+    use std::any::Any;
+
     use elaiki_api::events::{event_base, event_revocable_base, EventRevocable};
 
     #[event_base(name = "test_event_revocable_attribute_macro")]
@@ -45,5 +49,17 @@ mod test_event_revocable_attribute_macro {
         assert_eq!(true, e.is_revoke());
         e.set_revoke(false);
         assert_eq!(false, e.is_revoke());
+    }
+}
+
+mod test {
+    use std::collections::HashMap;
+
+    #[test]
+    fn test() {
+        let mut map: HashMap<String, i32> = HashMap::new();
+        map.insert("1".to_string(), 123);
+        let i = *map.get("1").unwrap();
+        assert_eq!(123, i);
     }
 }

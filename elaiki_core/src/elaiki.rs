@@ -10,7 +10,13 @@ use crate::log::Log;
 use crate::resource_manager::ResourceManager;
 
 pub struct Elaiki {
+    // 命令调度中心
     ticktock_hub: Rc<crate::ticktock::Hub>,
+
+    // 事件调度器
+    event_dispatcher: Rc<elaiki_api::events::Dispatcher>,
+
+    // 玩家
     player: Option<Rc<RefCell<Player>>>,
 
     log: Rc<dyn elaiki_api::log::Logger>,
@@ -23,6 +29,8 @@ impl Elaiki {
         let logger = elaiki_api::log::Helper::new(log.clone());
         Elaiki {
             ticktock_hub: Rc::new(crate::ticktock::Hub::new(log.clone())),
+            event_dispatcher: Rc::new(elaiki_api::events::Dispatcher::new(log.clone())),
+
             player: None,
 
             log,
@@ -44,7 +52,7 @@ impl Elaiki {
 
 impl Elaiki {
     pub fn init(&mut self, root_node: &Node2D) {
-        let resource_manager = ResourceManager::new(root_node).unwrap(); // TODO 为完成的不安全代码
+        let resource_manager = ResourceManager::new(root_node).unwrap(); // TODO 不安全代码
         self.player = Some(Rc::new(RefCell::new(Player::new(
             resource_manager.player_resource(),
         ))));
@@ -55,8 +63,12 @@ impl Elaiki {
         Rc::clone(&self.ticktock_hub)
     }
 
+    pub fn event_dispatcher(&self) -> Rc<elaiki_api::events::Dispatcher> {
+        Rc::clone(&self.event_dispatcher)
+    }
+
     pub fn player(&self) -> Rc<RefCell<Player>> {
-        Rc::clone(&self.player.as_ref().unwrap()) // TODO 为完成的不安全代码
+        Rc::clone(&self.player.as_ref().unwrap()) // TODO 不安全代码
     }
 
     pub fn log(&self) -> Rc<dyn elaiki_api::log::Logger> {

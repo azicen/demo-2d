@@ -41,13 +41,21 @@ pub fn event_impl_macro(args: &EventMacroArgs, ast: &DeriveInput) -> TokenStream
     let event_name = &args.name;
     let struct_name = &ast.ident;
     quote! {
-        impl ::elaiki_api::events::Event for #struct_name {
+        impl #struct_name {
             fn name() -> &'static str {
                 static EVENT_NAME: &str = #event_name;
                 EVENT_NAME
             }
+        }
+        impl ::elaiki_api::events::Event for #struct_name {
             fn event_name(&self) -> &'static str {
                 Self::name()
+            }
+            fn as_any(&self) -> & dyn Any {
+                self
+            }
+            fn as_any_mut(&mut self) -> & mut dyn Any {
+                self
             }
         }
     }
