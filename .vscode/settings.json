@@ -1,0 +1,5 @@
+{
+    "rust-analyzer.linkedProjects": [
+        "./scripts/elaiki_core/Cargo.toml"
+    ]
+}
