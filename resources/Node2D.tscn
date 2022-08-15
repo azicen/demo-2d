@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://elaiki_core/src/game/game.gdns" type="Script" id=1]
-[ext_resource path="res://resources/image/tile/tileset.tres" type="TileSet" id=2]
+[ext_resource path="res://scripts/elaiki_core/src/game/game.gdns" type="Script" id=1]
 [ext_resource path="res://resources/image/icon.png" type="Texture" id=3]
-[ext_resource path="res://elaiki_core/src/game/controller/keyboard_controller.gdns" type="Script" id=4]
+[ext_resource path="res://scripts/elaiki_core/src/game/controller/keyboard_controller.gdns" type="Script" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 30.0
@@ -16,12 +15,10 @@ text = "666"
 
 [node name="Map" type="Node2D" parent="."]
 
-[node name="TileMap_1" type="TileMap" parent="Map"]
-tile_set = ExtResource( 2 )
+[node name="TileMap" type="TileMap" parent="Map"]
 cell_size = Vector2( 32, 32 )
 cell_custom_transform = Transform2D( 32, 0, 0, 32, 0, 0 )
 format = 1
-tile_data = PoolIntArray( 131079, 0, 0, 131081, 0, 0, 131083, 0, 0, 131085, 0, 0, 131087, 0, 0, 196616, 0, 0, 196618, 0, 0, 196620, 0, 0, 196622, 0, 0, 262151, 0, 0, 262153, 0, 0, 262155, 0, 0, 262157, 0, 0, 262159, 0, 0, 1507579, 0, 0 )
 
 [node name="Player" type="Node2D" parent="."]
 script = ExtResource( 4 )
