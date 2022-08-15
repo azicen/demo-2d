@@ -8,6 +8,7 @@ use gdnative::prelude::Node2D;
 use crate::entities::Player;
 use crate::log::Log;
 use crate::resource_manager::ResourceManager;
+use crate::worlds::World;
 
 pub struct Elaiki {
     // 命令调度中心
@@ -18,6 +19,7 @@ pub struct Elaiki {
 
     // 玩家
     player: Option<Rc<RefCell<Player>>>,
+    world: Option<Rc<RefCell<World>>>,
 
     log: Rc<dyn elaiki_api::log::Logger>,
     logger: elaiki_api::log::Helper,
@@ -32,6 +34,7 @@ impl Elaiki {
             event_dispatcher: Rc::new(elaiki_api::events::Dispatcher::new(log.clone())),
 
             player: None,
+            world: None,
 
             log,
             logger,
@@ -69,6 +72,10 @@ impl Elaiki {
 
     pub fn player(&self) -> Rc<RefCell<Player>> {
         Rc::clone(&self.player.as_ref().unwrap()) // TODO 不安全代码
+    }
+
+    pub fn world(&self) -> Rc<RefCell<World>> {
+        Rc::clone(&self.world.as_ref().unwrap()) // TODO 不安全代码
     }
 
     pub fn log(&self) -> Rc<dyn elaiki_api::log::Logger> {
