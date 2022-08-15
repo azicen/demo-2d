@@ -5,13 +5,14 @@
 ifeq ($(OS), Windows_NT)
 	CP = powershell cp
 else
-	CP = bash cp
+	CP = cp
 endif
 
 PROJECT_NAME = elaiki_core
+PROJECT_PATH = ./scripts/$(PROJECT_NAME)
 
 BIN_DIR = ./bin
-TARGET_DIR = ./elaiki_core/target
+TARGET_DIR = $(PROJECT_PATH)/target
 
 
 .PHONY: init
@@ -31,7 +32,7 @@ run:
 # 构建
 build:
 	@echo start build...
-	@cd $(PROJECT_NAME) && cargo build
+	@cd $(PROJECT_PATH) && cargo build
 	@$(CP) $(TARGET_DIR)/debug/$(PROJECT_NAME).dll $(BIN_DIR)/windows/scripts.dll
 	@echo finish build ...
 
@@ -46,9 +47,8 @@ run-x86_64-pc-windows-gnu-debug:
 TARGET = x86_64-pc-windows-gnu
 # 构建 x86_64-pc-windows-gnu
 build-x86_64-pc-windows-gnu-debug:
-	echo $(SHELL)
 	@echo start build $(TARGET)...
-	@cd $(PROJECT_NAME) && cargo build --target $(TARGET)
+	@cd $(PROJECT_PATH) && cargo build --target $(TARGET)
 	@$(CP) $(TARGET_DIR)/$(TARGET)/debug/$(PROJECT_NAME).dll $(BIN_DIR)/windows/scripts.dll
 	@echo finish build $(TARGET)...
 
@@ -63,8 +63,23 @@ run-x86_64-pc-windows-msvc-debug:
 TARGET = x86_64-pc-windows-msvc
 # 构建 x86_64-pc-windows-msvc
 build-x86_64-pc-windows-msvc-debug:
-	echo $(SHELL)
 	@echo start build $(TARGET)...
-	@cd $(PROJECT_NAME) && cargo build --target $(TARGET)
+	@cd $(PROJECT_PATH) && cargo build --target $(TARGET)
 	@$(CP) $(TARGET_DIR)/$(TARGET)/debug/$(PROJECT_NAME).dll $(BIN_DIR)/windows/scripts.dll
+	@echo finish build $(TARGET)...
+
+
+.PHONY: run-x86_64-unknown-linux-gnu-debug
+# 构建并运行 x86_64-unknown-linux-gnu
+run-x86_64-unknown-linux-gnu-debug:
+	@make build-x86_64-unknown-linux-gnu-debug
+	@godot -d
+
+.PHONY: build-x86_64-unknown-linux-gnu-debug
+TARGET = x86_64-unknown-linux-gnu
+# 构建 x86_64-unknown-linux-gnu
+build-x86_64-unknown-linux-gnu-debug:
+	@echo start build $(TARGET)...
+	@cd $(PROJECT_PATH) && cargo build --target $(TARGET)
+	@$(CP) $(TARGET_DIR)/$(TARGET)/debug/lib$(PROJECT_NAME).so $(BIN_DIR)/linux/libscripts.so
 	@echo finish build $(TARGET)...
